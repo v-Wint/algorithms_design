@@ -3,8 +3,9 @@ from tester import Tester
 
 def main():
     tester = Tester()
-    tester.test_ldfs(20)
-    tester.test_astar(20)
+    # tester.create_mazes()
+    tester.test_ldfs()
+    tester.test_astar()
 
 
 if __name__ == "__main__":

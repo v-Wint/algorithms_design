@@ -1,4 +1,6 @@
-import func_timeout, psutil, os
+import func_timeout
+import os
+import psutil
 
 
 class LDFSSearcher:

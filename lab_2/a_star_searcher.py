@@ -1,4 +1,7 @@
-import math, func_timeout, psutil, os
+import func_timeout
+import math
+import os
+import psutil
 from queue import PriorityQueue
 
 
@@ -27,7 +30,7 @@ class AStarSearcher:
         open.put((self.__h(start, (1, 1)), start))
 
         came_from = {}
-
+        states = []
         while not open.empty():
             if psutil.Process(os.getpid()).memory_info().rss > 1024**3:  # limit memory use to 1 Gb
                 raise MemoryError("1 Gb memory exceeded")
@@ -37,8 +40,10 @@ class AStarSearcher:
                 self.max_stack = open.qsize()
 
             curr = open.get()[1]
+            if curr not in states:  # just to track
+                states.append(curr)
             if curr == (1, 1):
-                self.st = len(came_from)
+                self.st = len(states)
                 return self._reconstruct(came_from, start)
             for neighbour in self._expand(m, curr):
                 tentative_g_score = g_score[curr] + 1
@@ -49,7 +54,7 @@ class AStarSearcher:
                     f_score[neighbour] = tentative_f_score
                     open.put((tentative_f_score, neighbour))
                     came_from[neighbour] = curr
-        self.st = len(came_from)
+        self.st = len(states)
         return []
 
     @staticmethod
