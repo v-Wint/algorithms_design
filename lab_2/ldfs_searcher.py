@@ -8,6 +8,7 @@ class LDFSSearcher:
         self.it = 0  # number of iterations used
         self.st = 0  # number of states used
         self.max_stack = 0  # maximum simultaneous states at a time
+        self.stops = 0
 
     def search(self, m, limit):
         return func_timeout.func_timeout(30*60, self._search, args=[m, limit])  # limit time of search to 30
@@ -15,6 +16,7 @@ class LDFSSearcher:
     def _search(self, m, limit):
         self.it = 0
         self.max_stack = 0
+        self.stops = 0
 
         start = (m.rows, m.cols)
         stack = [(start, [start])]
@@ -30,6 +32,7 @@ class LDFSSearcher:
             if curr not in states:  # just to track
                 states.append(curr)
             if len(path) - 1 == limit:
+                self.stops += 1
                 continue
             if curr == (1, 1):
                 self.st = len(states)
